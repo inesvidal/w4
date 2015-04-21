@@ -2,17 +2,29 @@
 best <- function(state, outcome){
     ## Read outcome data
     data <- read.csv("outcome-of-care-measures.csv", colClasses = "character")
-    cases <- list("heart attack" = 11, "heart failure" = 17, pneumonia = 23)
+    cases <- list("heart attack" = 11, "heart failure" = 17, "pneumonia" = 23)
+    
     ## Check that state and outcome are valid
-    if (state !%in% data[,7]){
-        stop(???invalid state???)
+    if (! state %in% data[,7]){
+        stop("???invalid state???")
     }
-    if (outcome !%in% names(cases)) {
-        stop(???invalid outcome???)
+    if (! outcome %in% names(cases)) {
+        stop("???invalid outcome???")
     }
     
     ## Return hospital name in that state with lowest 30-day death rate
+    # cases[[outcome]] alternative to cases$outcome, as $ does not support 
+    # variables to store element names
     
+    # Select hospitals in the state
+    state_data <- subset(data, data[["State"]] == state, )
+
+    # Keep hospital with the lowest rate for the desired outcome
+    # Order hospitals by outcome value and then by name
+    sorted_best_hospitals <- 
+        state_data[order(as.integer(state_data[[cases[[outcome]]]]),state_data[["Hospital.Name"]]),]
+    #return the first in the list
+    return(sorted_best_hospitals[[1, 2]])
 }
 
 # > source("best.R")
