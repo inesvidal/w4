@@ -22,7 +22,7 @@ best <- function(state, outcome){
     # Keep hospital with the lowest rate for the desired outcome
     # Order hospitals by outcome value and then by name
     sorted_best_hospitals <- 
-        state_data[order(as.integer(state_data[[cases[[outcome]]]]),state_data[["Hospital.Name"]]),]
+        state_data[order(as.numeric(state_data[[cases[[outcome]]]]),state_data[["Hospital.Name"]]),]
     #return the first in the list
     return(sorted_best_hospitals[[1, 2]])
 }
